@@ -12,13 +12,13 @@ SIDEBAR_STYLE = {
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "width": "30rem",
+    "width": "20rem",
     "padding": "2rem 1rem",
     "background-color": "#4682B4",
     "color": "white"
 }
 CONTENT_STYLE = {
-    "margin-left":"32rem",
+    "margin-left":"22rem",
     "margin-right":"1rem"
 }
 
@@ -27,22 +27,16 @@ DROPDOWN_STYLE = {
 }
 
 # Define inputs for address
-address_inputs = ["Addess", "Postcode", "City", "State"]
-dash_inputs = []
-
-for address_input in address_inputs:
-
-    dash_inputs.append(dbc.FormGroup(
-        [
-            dbc.Label(address_input, width=4),
-            dbc.Col(
-                dbc.Input(id=address_input.replace(" ", "_") + "input", placeholder=address_input, type="text"),
-                width=8,
-            ),
-        ],
-        row=True,
-    )
-    )
+postcode_input = dbc.FormGroup(
+    [
+        dbc.Label("Postcode", width=4),
+        dbc.Col(
+            dbc.Input(id="postcode_input", placeholder="Postcode", type="number"),
+            width=8,
+        ),
+    ],
+    row=True,
+)
 
 ownership_input = dbc.FormGroup(
     [
@@ -91,22 +85,11 @@ stage_completion_input = dbc.FormGroup(
     row=True,
 )
 
-buildup_area_input = dbc.FormGroup(
+area_input = dbc.FormGroup(
     [
-        dbc.Label("Build Up Area", width=4),
+        dbc.Label("Area", width=4),
         dbc.Col(
-            dbc.Input(id="buildup_area_input", placeholder="Build Up Area", type="number"),
-            width=8,
-        ),
-    ],
-    row=True,
-)
-
-land_area_input = dbc.FormGroup(
-    [
-        dbc.Label("Land Area", width=4),
-        dbc.Col(
-            dbc.Input(id="land_area_input", placeholder="Land Area", type="number"),
+            dbc.Input(id="area_input", placeholder="Area", type="number"),
             width=8,
         ),
     ],
@@ -184,15 +167,11 @@ sidebar = html.Div([
         html.P("By The Universe Academy"),
         html.Hr(),
         property_type_input,
-        dbc.Form(dash_inputs),
+        postcode_input,
         ownership_input,
-        status_completion_input,
-        stage_completion_input,
-        buildup_area_input,
-        land_area_input,
-        property_description_input,
         residential_input,
         landed_type_input,
+        area_input,
 
     ], style=SIDEBAR_STYLE)
 
