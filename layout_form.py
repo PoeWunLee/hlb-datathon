@@ -7,6 +7,8 @@ from dash.dependencies import Input, Output, State
 #use template stylesheet
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.DARKLY])
 
+masterDF = pd.read_csv("cleaned_data.csv")
+
 SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
@@ -48,6 +50,7 @@ ownership_input = dbc.FormGroup(
                     {"label": "Freehold", "value": "freehold"},
                     {"label": "Leasehold", "value": "leasehold"},
                 ],
+                value="Leasehold",
                 inline=True,
             ),
             width=8,
@@ -66,6 +69,7 @@ status_completion_input = dbc.FormGroup(
                     {"label": "Undercon", "value": "undercon"},
                     {"label": "Completed", "value": "completed"},
                 ],
+                value="completed",
                 inline=True,
             ),
             width=8,
@@ -87,7 +91,7 @@ stage_completion_input = dbc.FormGroup(
 
 area_input = dbc.FormGroup(
     [
-        dbc.Label("Area", width=4),
+        dbc.Label("Land/Build Area", width=4),
         dbc.Col(
             dbc.Input(id="area_input", placeholder="Area", type="number"),
             width=8,
@@ -108,7 +112,9 @@ property_description_input = dbc.FormGroup(
 )
 
 # TODO: Add more types
-property_types = ['Apartment', 'Flat', 'Condominium']
+property_types = ['Apartment', 'Semi-Detached', 'Flat', 'Condominium',
+       'Terrace House', 'Shop lot', 'Bungalow', 'Office lot', 'Townhouse',
+       'Commercial/Shopping Complex', 'Penthouse']
 
 property_type_input = dbc.FormGroup(
     [
@@ -117,7 +123,7 @@ property_type_input = dbc.FormGroup(
             dcc.Dropdown(
                 options=[{'label': property_type, 'value': property_type} for property_type in property_types],
                 style={'background-color': 'white', 'color': 'black'}
-            ),
+            ), 
             width=8,
         ),
     ],
@@ -135,7 +141,9 @@ residential_input = dbc.FormGroup(
                     {"label": "Non-Residential", "value": False},
                 ],
                 inline=True,
+                value=True,
             ),
+            
             width=8,
         ),
     ],
@@ -153,7 +161,9 @@ landed_type_input = dbc.FormGroup(
                     {"label": "Non-Landed", "value": False},
                 ],
                 inline=True,
+                value=True,
             ),
+            
             width=8,
         ),
     ],
@@ -178,8 +188,6 @@ sidebar = html.Div([
 content = html.Div([
 
     dbc.Row([
-        dbc.Col(dbc.Jumbotron(dbc.Container(fluid=True ,style={"padding":10}))),
-        dbc.Col(dbc.Jumbotron(dbc.Container(fluid=True, style={"padding":10}))),
         dbc.Col(dbc.Jumbotron(dbc.Container(fluid=True ,style={"padding":10}))),
         dbc.Col(dbc.Jumbotron(dbc.Container(fluid=True, style={"padding":10})))
     ]),
@@ -206,15 +214,8 @@ app.layout = dbc.Container([sidebar, content],
     style={"padding":10}
 )
 
-# @app.callback(
-#     Output("collapse","is_open"),
-#     [Input("about-us","n_clicks")],
-#     [State("collapse","is_open")]
-# )
-# def toggle_collapse(n,is_open):
-#     if n:
-#         return not is_open
-#     return is_open
+
+
 
 #run app on local host
 if __name__ == '__main__':
