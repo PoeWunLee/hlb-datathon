@@ -2,6 +2,9 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 from dash.dependencies import Input, Output, State
 
 #use template stylesheet
@@ -186,7 +189,14 @@ sidebar = html.Div([
     ], style=SIDEBAR_STYLE)
 
 content = html.Div([
-
+    dcc.Dropdown(id="mode-select", options=[
+        {"label": "Property Type", "value":"Property_Type"},
+        {"label": "Location", "value":"Postcode"},
+        {"label": "Ownership", "value":"Free_Lease_Hold_Ind"},
+        {"label": "Residential Type", "value":"Residential_Type"},
+        {"label": "Landed Type", "value":"Landed_Type"},
+    ]),
+    html.Br(),
     dbc.Row([
         dbc.Col(dbc.Jumbotron(dbc.Container(fluid=True ,style={"padding":10}))),
         dbc.Col(dbc.Jumbotron(dbc.Container(fluid=True, style={"padding":10})))
