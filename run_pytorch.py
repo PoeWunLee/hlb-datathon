@@ -24,24 +24,27 @@ class HLBDataset(Dataset):
     def __init__(self, csv_path):
         self.csv_path = csv_path
         self.data = []
+
+        df = pd.read_csv(os.path.join(csv_path,"cleaned_data_encoded_categorical_label.csv"))
         
-        xDF = pd.read_csv(os.path.join(csv_path,"cleaned_data_encoded.csv"))
-        yDF = pd.read_csv(os.path.join(csv_path,"y_DF_categorical_label.csv"))					
-
-        xDF.drop(columns=['Submission_Mth', 'MG_OMV', 'MG_SnP', 'highest_MG_SnP_OMV', 
-                          'Free_Lease_Hold_Ind', 'Status_Of_Completion', 'Stage_Of_Completion','Title_Type',
-                          'Build_Up_Area', 'Land_Area',
-                          'Postcode', 'Property_State'],inplace=True)
+        df.drop(columns=['Disbursement_Manner', 'Submission_Mth', 'MG_OMV', 'MG_SnP', 'highest_MG_SnP_OMV', 
+                          'Status_Of_Completion', 'Stage_Of_Completion','Title_Type',
+                          'Build_Up_Area', 'Land_Area', 'City_Nm',
+                          'Property_State'],inplace=True)
         
-        xcolList = xDF.columns
-        ycolList = yDF.columns
-
-        X = xDF[xcolList[0:5]]
-        y = yDF[ycolList[-1]]
-
+        colList = df.columns
+        
+        X = df[colList[0:5]]
+        y = df[colList[-1]]
+        
         X = X.values
+        
         print(X)
-        y = y.values - 1
+        print('X.shape:', X.shape)
+        y = y.values 
+        
+        np.set_printoptions(threshold=sys.maxsize)
+        print('y.shape:', y.shape)
 
         line_count = 0
         for i in range(len(y)):
@@ -66,11 +69,13 @@ class HLBDataset(Dataset):
 
         return data
 
+
 def calculate_accuracy(fx, y):
     preds = fx.max(1, keepdim=True)[1]
     correct = preds.eq(y.view_as(preds)).sum()
     acc = correct.float()/preds.shape[0]
     return acc
+
 
 """
 TRAINING LOOP
@@ -92,6 +97,7 @@ def do_train(model, device, trainloader, criterion, optimizer):
         # forward + backward + optimize
         outputs = model(inputs)
         # print(outputs)
+        # print(target.shape)
 
         loss = criterion(outputs, target)
 
@@ -138,6 +144,7 @@ def do_test(model, device, testloader, criterion):
             test_acc += acc.item()
             
     return test_loss/len(testloader), test_acc/len(testloader)
+    
 
 def save_data(train_loss_array, train_acc_array, test_loss_array, test_acc_array):
     with open('train_loss', 'wb') as f:
@@ -164,17 +171,17 @@ def plot_graph(train_loss_array, train_acc_array, test_loss_array, test_acc_arra
     plt.plot(test_acc_array)
     plt.grid(color='k', linestyle='-', linewidth=0.1)
     plt.legend(['train_acc','test_acc'])
-    plt.show()
+    plt.savefig('results.png')
 
 def main(args):
     input_size = 5
-    output_size = 5
+    output_size = 3
     epochs = 100
 
     # Make the training and testing set to be less bias
     hlb_dataset = HLBDataset(args.dataset_path[0])
 
-    hlb_train, hlb_test = random_split(hlb_dataset, (round(0.9*len(hlb_dataset)), round(0.1*len(hlb_dataset))))
+    hlb_train, hlb_test = random_split(hlb_dataset, (round(0.8*len(hlb_dataset)), round(0.2*len(hlb_dataset))))
     
     print(args.weights_path[0])
     print(f'Number of training examples: {len(hlb_train)}')
@@ -191,10 +198,10 @@ def main(args):
 
     model.to(device)
 
-    weights = torch.tensor([1.0, 0.25, 0.88, 0.9, 0.9])
+    weights = torch.tensor([0.85, 0.25, 1.0])
     
     criterion = nn.CrossEntropyLoss(weight=weights).cuda()
-    learning_rate = 1e-5
+    learning_rate = 1e-6
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     
     train_acc_array = []
@@ -212,13 +219,13 @@ def main(args):
         test_acc_array.append(test_acc)
         test_loss_array.append(test_loss)
 
-        print('Test acc: {} Test loss: {}'.format(test_acc, test_loss))
+        print('Test loss: {} Test acc: {}'.format(test_loss, test_acc))
 
         if i % 50 == 0:
             learning_rate = learning_rate * 0.99
             for param_group in optimizer.param_groups:
                 param_group['lr'] = learning_rate
-    
+       
     torch.save(model.state_dict(), args.weights_path[0])
     save_data(train_loss_array, train_acc_array, test_loss_array, test_acc_array)
     plot_graph(train_loss_array, train_acc_array, test_loss_array, test_acc_array)
