@@ -17,6 +17,11 @@ Team members:
 <img src="./docs/demo.png"/><br>
 </div>
 
+## Neural Network
+<div align="center">
+<img src="./docs/nn.png"/><br>
+</div>
+
 ## Launch Dashboard
 ```
 python3 layout_form.py
