@@ -218,12 +218,12 @@ content = html.Div([
     dbc.Row([
         dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-1"),fluid=True ,style={"padding":0})),width="auto"),
         dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-2"),fluid=True, style={"padding":0})),width="auto")
-    ],justify="between"),
+    ]),
     dbc.Row([
         #dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-3"),fluid=True ,style={"padding":0})),width="auto"),
         dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-3a"),fluid=True ,style={"padding":0})),width="auto"),
         dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-4"),fluid=True ,style={"padding":0})),width="auto")
-    ],justify="between")
+    ])
 
 ], style=CONTENT_STYLE)
 
