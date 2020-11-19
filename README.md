@@ -22,7 +22,12 @@ Team members:
 <img src="./docs/nn.png"/><br>
 </div>
 
-## Launch Dashboard
+## Terminal
+Launch dashboard
 ```
 python3 layout_form.py
+```
+Train neural network
+```
+python3 run_pytorch.py
 ```
