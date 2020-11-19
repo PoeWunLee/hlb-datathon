@@ -295,7 +295,7 @@ def intermediate_link(selected, owner, res, land,prop,postcode):
         paper_bgcolor="#303030",
         plot_bgcolor = "#303030",
         margin={"r":0, "t":0, "l":0, "b":0},
-        width = 470,
+        width = 400,
         height = 200,
         showlegend=False,
     )
@@ -341,7 +341,7 @@ def createFig4(thisInput,mode):
         plot_bgcolor = "#303030",
         barmode="overlay",
         margin={"r":0, "t":0, "l":0, "b":0},
-        width = 500,
+        width = 570,
         height = 220,
         legend={
             "yanchor":"bottom",
@@ -388,7 +388,7 @@ def createFig1(thisInput,mode):
         plot_bgcolor="#303030",
         margin={"r":0, "t":0, "l":0, "b":0},
         width = 500,
-        height = 250,
+        height = 400,
         legend={
             "yanchor":"bottom",
             "xanchor": "right"
@@ -463,7 +463,7 @@ def createFig2(mode):
         showlegend=False,
         margin={"r":0, "t":0, "l":0, "b":0},
         width = 470,
-        height = 250
+        height = 400
     )
     boxFig.update_xaxes(title_text="SnP-OMV")
 
