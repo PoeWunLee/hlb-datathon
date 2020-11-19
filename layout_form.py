@@ -190,7 +190,7 @@ landed_type_input = dbc.FormGroup(
 
 sidebar = html.Div([
 
-        html.H3("<Our Project title>"),
+        html.H3("Mortgage Dashboard"),
         html.P("By The Universe Academy"),
         html.Hr(),
         property_type_input,
@@ -198,7 +198,9 @@ sidebar = html.Div([
         ownership_input,
         residential_input,
         landed_type_input,
-        area_input,
+        #area_input,
+        html.Hr(),
+        html.P("Current display mode"),
         dcc.Dropdown(id="mode-select", 
         options=[
             {"label": "Property Type", "value":"Property_Type"},
@@ -207,8 +209,8 @@ sidebar = html.Div([
             {"label": "Residential Type", "value":"Residential_Type"},
             {"label": "Landed Type", "value":"Landed_Type"}
         ],
-        style={"color":"black"}, value="Property_Type")
-
+        style={"color":"black"}, value="Property_Type"),
+        
     ], style=SIDEBAR_STYLE)
 
 content = html.Div([
@@ -216,11 +218,12 @@ content = html.Div([
     dbc.Row([
         dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-1"),fluid=True ,style={"padding":0})),width="auto"),
         dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-2"),fluid=True, style={"padding":0})),width="auto")
-    ]),
+    ],justify="between"),
     dbc.Row([
-        dbc.Col(dbc.Jumbotron(dbc.Container(dbc.Row([dbc.Col(dcc.Loading(id="jumb-3")), dbc.Col(dcc.Loading(id="jumb-3a"))], justify="between"),fluid=True ,style={"padding":0})),width="auto"),
+        #dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-3"),fluid=True ,style={"padding":0})),width="auto"),
+        dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-3a"),fluid=True ,style={"padding":0})),width="auto"),
         dbc.Col(dbc.Jumbotron(dbc.Container(dcc.Loading(id="jumb-4"),fluid=True ,style={"padding":0})),width="auto")
-    ])
+    ],justify="between")
 
 ], style=CONTENT_STYLE)
 
@@ -281,26 +284,28 @@ def intermediate_link(selected, owner, res, land,prop,postcode):
 
 
     #create predicted pie chart
-    labels=["SnP < OMV", "SnP = OMV" , "SnP > OMV"]
+    labels=["SnP < OMV", "SnP = OMV" ,"SnP > OMV"]
     values = getNewNN(refDict)
+    colors = ['#636EFA','#EF553B','#00CC96']
     
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
-                             insidetextorientation='radial', hole=.7
+    
+    
+    fig = go.Figure(data=[go.Bar(y=labels,x=values,marker_color=colors, orientation="h",width=[0.35, 0.35 ,0.35]
                             )])
     fig.update_layout(
         template="plotly_dark", 
         paper_bgcolor="#303030",
+        plot_bgcolor = "#303030",
         margin={"r":0, "t":0, "l":0, "b":0},
-        width = 300,
-        height = 250,
-        legend={
-            "yanchor":"bottom",
-            "xanchor": "right"
-        }
+        width = 470,
+        height = 200,
+        showlegend=False,
     )
     
+    fig.update_traces(textposition="inside")
+    fig.update_xaxes(title_text="Confidence")
 
-    return refDict[selected], dcc.Graph(figure=fig)
+    return refDict[selected], [html.H5("Predicted Confidence Level"),html.Br(),dcc.Graph(figure=fig), html.Small("Model Accuracy: 78.6%")]
 
 @app.callback(
     Output("jumb-4","children"),
@@ -328,15 +333,15 @@ def createFig4(thisInput,mode):
         plot_bgcolor = "#303030",
         barmode="overlay",
         margin={"r":0, "t":0, "l":0, "b":0},
-        width = 650,
-        height = 250,
+        width = 500,
+        height = 220,
         legend={
             "yanchor":"bottom",
             "xanchor": "right"
         }
     )
 
-    return dcc.Graph(figure=fig)
+    return [html.H5("Distribution of Classes"),html.Br(),dcc.Graph(figure=fig), html.Small("  ")]
 
 @app.callback(
     Output("jumb-1","children"),
@@ -373,8 +378,11 @@ def createFig1(thisInput,mode):
         }
     )
 
-    return dcc.Graph(figure=fig)
+    fig.update_xaxes(title_text="Submission Month")
+    fig.update_yaxes(title_text="SnP-OMV")
 
+    return [html.H5("Time Series of SnP-OMP for {}".format(thisInput)),html.Br(),dcc.Graph(figure=fig)]
+"""
 @app.callback(
     Output("jumb-3","children"),
     [Input("hidden-div","children"),
@@ -391,23 +399,24 @@ def createFig3(thisInput,mode):
     myDF.loc[myDF["is_SnP_higher"]=="SnP = OMV"]["is_SnP_higher"].count(),
     myDF.loc[myDF["is_SnP_higher"]=="SnP > OMV"]["is_SnP_higher"].count(),]
 
+   
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent',
-                             insidetextorientation='radial', hole=.7
+                             insidetextorientation='radial', hole=.4, sort=False
                             )])
+    
+    
     fig.update_layout(
         template="plotly_dark", 
         paper_bgcolor="#303030",
         margin={"r":0, "t":0, "l":0, "b":0},
-        width = 300,
-        height = 250,
-        legend={
-            "yanchor":"bottom",
-            "xanchor": "right"
-        }
+        width = 200,
+        height = 200,
+        showlegend=False
     )
+    fig.update_traces(textposition="inside")
 
-    return dcc.Graph(figure=fig)
-
+    return [html.H5("Historical Proportion"),html.Br(),dcc.Graph(figure=fig)]
+"""
 @app.callback(
     Output("jumb-2","children"),
     [Input("mode-select","value")]
@@ -416,27 +425,34 @@ def createFig2(mode):
 
     myDF = masterDF.copy()
 
+    if mode == "Free_Lease_Hold_Ind":
+        myDF.rename(columns={"Free_Lease_Hold_Ind":"Ownership"},inplace=True)
+        mode = "Ownership"
+    else:
+        myDF.rename(columns={mode:mode.replace("_"," ")},inplace=True)
+        mode = mode.replace("_"," ")
+
     #filter exteme outliers for display
     myDF = myDF.loc[(myDF["difference"] < 10**6) & (myDF["difference"] > -10**6)]
 
     boxFig = go.Figure()    
     for items in myDF[mode].unique():
         boxFig.add_trace(go.Box(x=myDF["difference"][myDF[mode] == items], name=items))
-
+    
     boxFig.update_layout(
         template="plotly_dark", 
         paper_bgcolor="#303030", 
         plot_bgcolor ="#303030" ,
         showlegend=False,
         margin={"r":0, "t":0, "l":0, "b":0},
-        width = 450,
+        width = 470,
         height = 250
     )
+    boxFig.update_xaxes(title_text="SnP-OMV")
 
-    return dcc.Graph(figure=boxFig)
+    return [html.H5("Box Plot by {}".format(mode)),html.Br(),dcc.Graph(figure=boxFig)]
 
 
-    
 
 #run app on local host
 if __name__ == '__main__':
