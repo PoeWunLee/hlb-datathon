@@ -12,6 +12,11 @@ Team members:
 * [Lee Poe Wun](https://www.linkedin.com/in/pwunlee/)
 * [Jun Wen Kwan](https://www.linkedin.com/in/junwenkwan/)
 
+## Demo Dashboard
+<div align="center">
+<img src="./docs/demo.png"/><br>
+</div>
+
 ## Launch Dashboard
 ```
 python3 layout_form.py

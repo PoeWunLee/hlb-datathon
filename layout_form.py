@@ -279,16 +279,14 @@ def intermediate_link(selected, owner, res, land,prop,postcode):
     #convert to state
     tempDF = masterDF.copy()
     tempDF = tempDF.loc[tempDF["Postcode"]==refDict["Property_State"]].head()
-    print(tempDF.iloc[0]["Property_State"])
+    print(tempDF.head())
     refDict["Property_State"] = tempDF.iloc[0]["Property_State"]
 
-
+    
     #create predicted pie chart
     labels=["SnP < OMV", "SnP = OMV" ,"SnP > OMV"]
     values = getNewNN(refDict)
     colors = ['#636EFA','#EF553B','#00CC96']
-    
-    
     
     fig = go.Figure(data=[go.Bar(y=labels,x=values,marker_color=colors, orientation="h",width=[0.35, 0.35 ,0.35]
                             )])
@@ -319,14 +317,24 @@ def createFig4(thisInput,mode):
 
     #if gap more than 1 mil, log x axis
     flag=False
-    if myDF["highest_MG_SnP_OMV"].max() - myDF["highest_MG_SnP_OMV"].min() > 10**6:
+    print(myDF["highest_MG_SnP_OMV"].max().item()- myDF["highest_MG_SnP_OMV"].min().item())
+    
+    if myDF["highest_MG_SnP_OMV"].max().item()- myDF["highest_MG_SnP_OMV"].min().item()> 10**6:
         flag=True
+    
+    
+    """
+    #set axes range 
+    if myDF["highest_MG_SnP_OMV"].max() > 10**6:
+        axesRange = [myDF["highest_MG_SnP_OMV"].min(), 10**6]
+    else:
+        axesRange = [myDF["highest_MG_SnP_OMV"].min(), myDF["highest_MG_SnP_OMV"].max()]
+    """
 
     #beautify is_SnP_higher
-    
     myDF.rename(columns={"is_SnP_higher":"Legend","highest_MG_SnP_OMV":"Highest value between SnP/OMV"},inplace=True)
 
-    fig = px.histogram(myDF,x="Highest value between SnP/OMV",color="Legend",log_x=flag)
+    fig = px.histogram(myDF,x="Highest value between SnP/OMV",color="Legend",log_x=False)
     fig.update_layout(
         template="plotly_dark", 
         paper_bgcolor="#303030", 
@@ -338,10 +346,19 @@ def createFig4(thisInput,mode):
         legend={
             "yanchor":"bottom",
             "xanchor": "right"
-        }
+        },
+        xaxis = dict(range=[0,10**6])
     )
 
-    return [html.H5("Distribution of Classes"),html.Br(),dcc.Graph(figure=fig), html.Small("  ")]
+    if mode == "Free_Lease_Hold_Ind":
+        mode = "Ownership"
+    else:
+        mode = mode.replace("_"," ")
+    
+    print(thisInput)
+    
+
+    return [html.H5("Distribution of {}".format(thisInput)),html.Br(),dcc.Graph(figure=fig), html.Small("  ")]
 
 @app.callback(
     Output("jumb-1","children"),
@@ -379,9 +396,9 @@ def createFig1(thisInput,mode):
     )
 
     fig.update_xaxes(title_text="Submission Month")
-    fig.update_yaxes(title_text="SnP-OMV")
+    fig.update_yaxes(title_text="Mean SnP-OMV")
 
-    return [html.H5("Time Series of SnP-OMP for {}".format(thisInput)),html.Br(),dcc.Graph(figure=fig)]
+    return [html.H5("Time Series of Mean SnP-OMV for {}".format(thisInput)),html.Br(),dcc.Graph(figure=fig)]
 """
 @app.callback(
     Output("jumb-3","children"),
@@ -456,4 +473,4 @@ def createFig2(mode):
 
 #run app on local host
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
