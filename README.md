@@ -1,4 +1,4 @@
-# Hong Leong Bank Datathon
+# Hong Leong Bank Datathon 2020
 
 <div align="center">
 <img src="./docs/logo.png"/><br>
@@ -30,4 +30,8 @@ python3 layout_form.py
 Train neural network
 ```
 python3 run_pytorch.py
+```
+Deploy neural network
+```
+python3 deploy_pytorch.py
 ```
