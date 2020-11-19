@@ -178,7 +178,7 @@ landed_type_input = dbc.FormGroup(
                     {"label": "Non-Landed", "value": "Non-Landed"},
                 ],
                 inline=True,
-                value="Landed",
+                value="Non-Landed",
             ),
             
             width=8,
@@ -190,7 +190,7 @@ landed_type_input = dbc.FormGroup(
 
 sidebar = html.Div([
 
-        html.H3("Mortgage Dashboard"),
+        html.H4("Mortgage Dashboard"),
         html.P("By The Universe Academy"),
         html.Hr(),
         property_type_input,
