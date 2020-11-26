@@ -455,6 +455,7 @@ def createFig2(mode):
     boxFig = go.Figure()    
     for items in myDF[mode].unique():
         boxFig.add_trace(go.Box(x=myDF["difference"][myDF[mode] == items], name=items))
+        boxFig.update_traces(quartilemethod="exclusive")
     
     boxFig.update_layout(
         template="plotly_dark", 
@@ -465,7 +466,7 @@ def createFig2(mode):
         width = 470,
         height = 400
     )
-    boxFig.update_xaxes(title_text="SnP-OMV")
+    boxFig.update_xaxes(title_text="SnP-OMV",range=[-1.25*10**6, 1.25*10**6])
 
     return [html.H5("Box Plot by {}".format(mode)),html.Br(),dcc.Graph(figure=boxFig)]
 
@@ -473,4 +474,4 @@ def createFig2(mode):
 
 #run app on local host
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
