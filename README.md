@@ -1,4 +1,4 @@
-# Hong Leong Bank Datathon
+# Hong Leong Bank Datathon 2020
 
 <div align="center">
 <img src="./docs/logo.png"/><br>
@@ -17,7 +17,21 @@ Team members:
 <img src="./docs/demo.png"/><br>
 </div>
 
-## Launch Dashboard
+## Neural Network
+<div align="center">
+<img src="./docs/nn.png"/><br>
+</div>
+
+## Terminal
+Launch dashboard
 ```
 python3 layout_form.py
+```
+Train neural network
+```
+python3 run_pytorch.py
+```
+Deploy neural network
+```
+python3 deploy_pytorch.py
 ```
