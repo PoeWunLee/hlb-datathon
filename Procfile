@@ -1,1 +1,1 @@
-web: gunicorn layout_form:server
+web: gunicorn app:server
