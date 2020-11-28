@@ -7,4 +7,3 @@ matplotlib
 pandas
 pytorch
 gunicorn
-json
