@@ -7,7 +7,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output, State
 import json
-from myARIMA import thisARIMA
 import os
 from run_pytorch import *
 

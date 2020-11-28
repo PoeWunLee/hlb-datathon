@@ -4,5 +4,6 @@ seaborn
 numpy
 scikit-learn
 matplotlib
-xgboost
+pandas
+pytorch
 gunicorn
