@@ -190,7 +190,7 @@ landed_type_input = dbc.FormGroup(
 
 sidebar = html.Div([
 
-        html.H4("Mortgage Dashboard"),
+        html.H5("Mortgage Dashboard"),
         html.P("By The Universe Academy"),
         html.Hr(),
         property_type_input,
@@ -210,6 +210,17 @@ sidebar = html.Div([
             {"label": "Landed Type", "value":"Landed_Type"}
         ],
         style={"color":"black"}, value="Property_Type"),
+       html.Hr(),
+       html.Div([
+           html.P("About us", id="about-us"),
+           #dbc.NavItem(dbc.NavLink("About us", active=True, id="about-us")),
+           dbc.Collapse([
+                html.A("Poe Wun Lee", href="https://www.linkedin.com/in/pwunlee/", style=DROPDOWN_STYLE),
+                html.Hr(),
+                html.A("Jun Wen Kwan",href="https://au.linkedin.com/in/junwenkwan", style=DROPDOWN_STYLE),
+                html.Hr(),
+                html.A("Kian Chong Khoo", href="https://www.linkedin.com/in/kianchongkhoo/", style=DROPDOWN_STYLE)
+            ],id="collapse")])
         
     ], style=SIDEBAR_STYLE)
 
@@ -254,6 +265,17 @@ app.layout = dbc.Container([sidebar, content],
     fluid=True,
     style={"padding":10}
 )
+
+@app.callback(
+    Output("collapse","is_open"),
+    [Input("about-us","n_clicks")],
+    [State("collapse","is_open")]
+)
+def toggle_collapse(n,is_open):
+    if n:
+        return not is_open
+    return is_open
+
 
 @app.callback(
     [Output("hidden-div","children"),Output("jumb-3a","children")],
@@ -474,4 +496,4 @@ def createFig2(mode):
 
 #run app on local host
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
