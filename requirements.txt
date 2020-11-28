@@ -7,5 +7,4 @@ matplotlib
 pandas
 pytorch
 gunicorn
-os
 json
