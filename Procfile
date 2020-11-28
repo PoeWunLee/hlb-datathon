@@ -1,1 +1,1 @@
-worker: python layout_form.py
+web: gunicorn layout_form:server
