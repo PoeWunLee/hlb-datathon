@@ -14,6 +14,7 @@ from run_pytorch import *
 
 #use template stylesheet
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.DARKLY])
+server = app.server
 
 masterDF = pd.read_csv("cleaned_data.csv")
 masterDF["is_SnP_higher"] = masterDF["highest_MG_SnP_OMV"]== masterDF["MG_SnP"]
