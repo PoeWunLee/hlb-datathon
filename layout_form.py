@@ -15,11 +15,11 @@ import torch
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.DARKLY])
 server = app.server
 
-masterDF = pd.read_csv("cleaned_data.csv")
+masterDF = pd.read_csv("https://raw.githubusercontent.com/PoeWunLee/hlb-datathon/main/cleaned_data.csv")
 masterDF["is_SnP_higher"] = masterDF["highest_MG_SnP_OMV"]== masterDF["MG_SnP"]
 masterDF.loc[masterDF["difference"]==0,"is_SnP_higher"] = "SnP = OMV"
 masterDF["is_SnP_higher"] = masterDF["is_SnP_higher"].replace([True,False], ["SnP > OMV", "SnP < OMV"])
-encodedDF = pd.read_csv("cleaned_data_encoded_categorical_label.csv")
+encodedDF = pd.read_csv("https://raw.githubusercontent.com/PoeWunLee/hlb-datathon/main/cleaned_data_encoded_categorical_label.csv")
 masterMerged = pd.merge(masterDF,encodedDF,left_index=True,right_index=True)
 
 SIDEBAR_STYLE = {
