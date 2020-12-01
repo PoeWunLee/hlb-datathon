@@ -149,7 +149,6 @@ typing-extensions==3.7.4.3
 urllib3==1.25.8
 virtualenv==20.2.1
 virtualenv-clone==0.5.4
-vtk===-PKG-VERSION
 wcwidth==0.1.9
 webencodings==0.5.1
 Werkzeug==1.0.1
