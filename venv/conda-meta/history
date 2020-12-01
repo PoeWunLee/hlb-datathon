@@ -50,3 +50,9 @@
 +defaults/noarch::pytz-2020.4-pyhd3eb1b0_0
 +defaults/win-64::pandas-1.1.3-py38ha925a31_0
 # update specs: ['pandas']
+==> 2020-12-01 21:04:14 <==
+# cmd: C:\Users\Poe\Anaconda3\Scripts\conda-script.py install -c intel mkl_fft=1.2.0
+# conda version: 4.9.2
+-defaults/win-64::openssl-1.1.1h-he774522_0
++intel/win-64::openssl-1.1.1g-vc14he774522_5
+# update specs: ['mkl_fft=1.2.0']
