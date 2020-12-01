@@ -240,7 +240,7 @@ content = html.Div([
 
 #define NN def
 def getNewNN(thisDict):
-    weights_pth = os.path.join('checkpoints','nn_weights.pth')
+    weights_pth = "checkpoints/nn_weights.pth"
     model = MLP(input_size=5, output_size=3)
     model.load_state_dict(torch.load(weights_pth, map_location=torch.device('cpu')))
     model.eval()
