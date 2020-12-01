@@ -9,7 +9,7 @@ from dash.dependencies import Input, Output, State
 #import json
 from model.mlp import MLP
 from torch.autograd import Variable
-
+import torch
 
 #use template stylesheet
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.DARKLY])
