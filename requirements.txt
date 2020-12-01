@@ -22,10 +22,6 @@ click-plugins==1.1.1
 cligj==0.7.0
 cloudpickle==1.6.0
 colorama==0.4.3
-conda==4.9.2
-conda-build==3.18.11
-conda-package-handling==1.6.0
-conda-verify==3.4.2
 configobj==5.0.6
 cryptography==2.8
 cycler==0.10.0
