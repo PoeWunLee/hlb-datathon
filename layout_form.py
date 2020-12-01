@@ -7,7 +7,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output, State
 #import json
-from run_pytorch import *
+from model.mlp import MLP
+from torch.autograd import Variable
 
 
 #use template stylesheet
