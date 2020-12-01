@@ -65,10 +65,6 @@ Jinja2==2.11.1
 joblib==0.16.0
 json5==0.9.4
 jsonschema==3.2.0
-jupyter-client==6.1.2
-jupyter-core==4.6.3
-jupyterlab==1.2.6
-jupyterlab-server==1.1.0
 kiwisolver==1.1.0
 libarchive-c==2.8
 locket==0.2.0
